@@ -1,0 +1,138 @@
+/* Perks */
+.perks {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.perks__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.perks__card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-smooth);
+}
+
+.perks__card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+}
+
+.perks__emoji {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.perks__card h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.perks__card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Openings */
+.openings {
+  background: var(--bg-primary);
+}
+
+.openings__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.openings__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-smooth);
+}
+
+.openings__card:hover {
+  border-color: var(--border-accent);
+  transform: translateX(6px);
+  box-shadow: var(--shadow-glow);
+}
+
+.openings__dept-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  background: var(--bg-glass);
+  margin-bottom: 0.5rem;
+}
+
+.openings__title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.openings__meta {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.openings__meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.openings__apply {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: gap var(--transition-base);
+  white-space: nowrap;
+}
+
+.openings__apply:hover {
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .perks__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .openings__card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .perks__grid {
+    grid-template-columns: 1fr;
+  }
+}
