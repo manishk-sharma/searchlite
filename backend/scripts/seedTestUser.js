@@ -16,29 +16,38 @@ const seedUser = async () => {
         await mongoose.connect(mongoUri);
         console.log('Connected to MongoDB for seeding...');
 
-        const testEmail = 'test@searchliteinc.in';
-        const existingUser = await User.findOne({ email: testEmail });
+        const testEmail = 'manishmehra@searchliteinc.in';
+        const testUsername = 'manishmehra';
+        const testPassword = 'admin';
+
+        let existingUser = await User.findOne({ $or: [{ email: testEmail }, { username: testUsername }] });
 
         if (existingUser) {
-            console.log('Test user already exists. Updating password...');
-            existingUser.password = 'test1234';
+            console.log('User already exists. Updating credentials...');
+            existingUser.email = testEmail;
+            existingUser.username = testUsername;
+            existingUser.password = testPassword; // Triggers pre-save hashing
+            existingUser.fullName = 'Manish Mehra';
+            existingUser.role = 'admin';
             await existingUser.save();
-            console.log('Test user updated successfully.');
+            console.log('User updated successfully.');
         } else {
-            console.log('Creating new test user...');
+            console.log('Creating new user...');
             await User.create({
-                fullName: 'Test User',
+                fullName: 'Manish Mehra',
+                username: testUsername,
                 email: testEmail,
-                password: 'test1234',
+                password: testPassword,
                 role: 'admin',
             });
-            console.log('Test user created successfully.');
+            console.log('User created successfully.');
         }
 
         console.log('\n-----------------------------------');
         console.log('Credentials:');
+        console.log(`Username: ${testUsername}`);
         console.log(`Email: ${testEmail}`);
-        console.log('Password: test1234');
+        console.log(`Password: ${testPassword}`);
         console.log('Role: admin');
         console.log('-----------------------------------\n');
 
@@ -46,9 +55,6 @@ const seedUser = async () => {
     } catch (error) {
         console.error('❌ SEEDING FAILED!');
         console.error('Error details:', error);
-        if (error.code === 11000) {
-            console.error('Possible duplicate key error. The email might already be in the database.');
-        }
         process.exit(1);
     }
 };

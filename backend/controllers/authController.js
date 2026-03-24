@@ -6,21 +6,22 @@ import generateToken from '../config/generateToken.js';
 // @access  Public
 export const registerUser = async (req, res) => {
     try {
-        const { fullName, email, password } = req.body;
+        const { fullName, email, username, password } = req.body;
 
         // Check if user already exists
-        const userExists = await User.findOne({ email });
+        const userExists = await User.findOne({ $or: [{ email }, { username }] });
         if (userExists) {
-            return res.status(400).json({ message: 'An account with this email already exists' });
+            return res.status(400).json({ message: 'Email or username already in use' });
         }
 
         // Create user
-        const user = await User.create({ fullName, email, password });
+        const user = await User.create({ fullName, email, username, password });
 
         res.status(201).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
+            username: user.username,
             role: user.role,
             token: generateToken(user._id),
         });
@@ -38,24 +39,27 @@ export const registerUser = async (req, res) => {
 // @access  Public
 export const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body; // 'email' from frontend is now used as username/email
 
         // Find user and include password for comparison
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ 
+            $or: [{ email: email.toLowerCase() }, { username: email.toLowerCase() }] 
+        }).select('+password');
 
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         res.json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
+            username: user.username,
             role: user.role,
             token: generateToken(user._id),
         });
@@ -77,6 +81,7 @@ export const getMe = async (req, res) => {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
+            username: user.username,
             role: user.role,
         });
     } catch (error) {
@@ -98,7 +103,6 @@ export const forgotPassword = async (req, res) => {
         }
 
         // TODO: In production, generate a reset token and send an email
-        // For now, respond with success
         res.json({ message: 'If an account with that email exists, a reset link has been sent.' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });

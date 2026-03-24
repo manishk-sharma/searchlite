@@ -75,12 +75,12 @@ export default function Login() {
 
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Email Address</label>
+                <label>Username / Email</label>
                 <div className="input-wrapper">
                   <Mail size={18} className="input-icon" />
                   <input 
-                    type="email" 
-                    placeholder="name@company.com" 
+                    type="text" 
+                    placeholder="Username or email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
